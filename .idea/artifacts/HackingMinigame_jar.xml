@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="HackingMinigame:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/HackingMinigame_jar</output-path>
+    <root id="archive" name="HackingMinigame.jar">
+      <element id="module-output" name="HackingMinigame" />
+    </root>
+  </artifact>
+</component>
