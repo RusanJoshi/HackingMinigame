@@ -23,7 +23,7 @@ public class MatrixCell extends JPanel implements MouseListener {
 
     Random rand = new Random();
     String letterList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    String numberList = "0123456789";
+    String numberList = "0123456789!~#$%&*()-_=+";
     String address;
     boolean clicked;
     boolean flagged = false; // var for a feature not fully fleshed out. Flagging MatrixCells (right click)
@@ -46,6 +46,9 @@ public class MatrixCell extends JPanel implements MouseListener {
     }
     public void setClicked(boolean pBoolean){
         this.clicked = pBoolean;
+    }
+    public JLabel getMainLabel() {
+        return mainLabel;
     }
 
     public MatrixCell(){
@@ -106,8 +109,8 @@ public class MatrixCell extends JPanel implements MouseListener {
 
     // executes when restarting the game
     // resets the Matrix to default visual values and gives it a new random address(int) value
-    public void resetMatrixCell(){
-        address = String.valueOf(letterList.charAt(rand.nextInt(10))) + String.valueOf(numberList.charAt(rand.nextInt(10)));
+    public void resetMatrixCell(int pLetterRange, int pNumberRange){
+        address = letterList.charAt(rand.nextInt(pLetterRange)) + String.valueOf(numberList.charAt(rand.nextInt(pNumberRange)));
         mainLabel.setForeground(Color.WHITE);
         mainLabel.setBackground(Color.BLACK);
         mainLabel.setText(address);

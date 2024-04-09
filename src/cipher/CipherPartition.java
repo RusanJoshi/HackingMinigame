@@ -86,6 +86,7 @@ public class CipherPartition extends JPanel {
             CIPHER_CELL_ARRAYLIST.get(count).getMAIN_LABEL().setBackground(previewColorScheme.get(count));
             CIPHER_CELL_ARRAYLIST.get(count).getMAIN_LABEL().setOpaque(true);
         }
+        repaint();
     }
 
     // used when choosing different color scheme options
@@ -110,8 +111,9 @@ public class CipherPartition extends JPanel {
     // needed after previewing color schemes
     // resets the CipherCells to its state before player previewed color schemes
     public void resumeColorProgress(int pProgress){
-        for(int count = 0; count < 5; count++){
-            CIPHER_CELL_ARRAYLIST.get(count).getMAIN_LABEL().setOpaque(count < pProgress);
+        for(int count = 0; count < pProgress; count++){
+            CIPHER_CELL_ARRAYLIST.get(count).getMAIN_LABEL().setOpaque(true);
+//            CIPHER_CELL_ARRAYLIST.get(count).getMAIN_LABEL().setOpaque(count < pProgress);
         }
         repaint();
     }
