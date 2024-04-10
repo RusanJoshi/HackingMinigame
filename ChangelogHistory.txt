@@ -2,8 +2,8 @@
 * added the option to change the difficulty
 * added flagging system
     - flag cells of interest
-	- right-click to flag a cell, right-click again to remove flag
-	- click the flag icon to remove all flags
+    - right-click to flag a cell, right-click again to remove flag
+    - click the flag icon to remove all flags
 * added visual that indicates selected difficulty and color scheme
 * formatted text in textbox for difficulty and color options
 * fixed a bug that prevented the currently selected color scheme from being previewed
