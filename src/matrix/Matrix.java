@@ -28,6 +28,7 @@ public class Matrix extends JPanel{
     private final Timer GLITCH_EFFECT;
     private final Timer DB_SPAM_TIMER;
     Random rand = new Random();
+    OptionsPanel optionsPanelConnection;
     DetectionMeter detectionMeterConnection;
     Cipher cipherConnection;
     SecurityContainer securityContainerConnection;
@@ -45,9 +46,12 @@ public class Matrix extends JPanel{
     int passKeyProgress = 0;
     String selectedID;
     boolean correctChoice = false;
+    int difficultySetting = 1;
+    int letterRange, numberRange;
     int detectionLevel = 0;
     boolean toggleDetectionMeter = true;
     boolean laughedAtUserForFailing = false;
+    boolean experimentalDifficultyUnlocked = false;
 
     ArrayList<DialogueBox>  dialogueBoxSpamArrayList = new ArrayList<>();
     String[] hackerGibberish = {"Breach", "Protocol", "Break in", "Cache", "Valid", "DB_01", "DB_99", "Keys", "Behind", "The", "Mask"};
@@ -78,6 +82,9 @@ public class Matrix extends JPanel{
         return GLITCH_EFFECT;
     }
     public Timer getDB_SPAM_TIMER() {return DB_SPAM_TIMER;}
+    public void setOptionsPanelConnection(OptionsPanel optionsPanelConnection) {
+        this.optionsPanelConnection = optionsPanelConnection;
+    }
     public void setCipherConnection(Cipher cipherConnection) {
         this.cipherConnection = cipherConnection;
     }
@@ -88,6 +95,9 @@ public class Matrix extends JPanel{
         this.detectionMeterConnection = detectionMeterConnection;
     }
     public int getPassKeyProgress() {return passKeyProgress;}
+    public void setDifficultySetting(int difficultySetting) {
+        this.difficultySetting = difficultySetting;
+    }
     public int getDetectionLevel() {
         return detectionLevel;
     }
@@ -154,6 +164,7 @@ public class Matrix extends JPanel{
     }
 
     // adds MatrixPartitions to the Matrix
+    // initial setup with medium difficulty (M:10,10)
     private void addPartitionsToMatrix(){
         for(int count = 0; count < matrixDimension; count++){
             matrixPartitionArrayList.add(new MatrixPartition(matrixDimension));
@@ -200,7 +211,11 @@ public class Matrix extends JPanel{
         }
         if(passKeyProgress == 5){ // WIN SCENARIO
             System.out.println("I'm in.");
-
+            if(toggleDetectionMeter && detectionLevel == 0 && !experimentalDifficultyUnlocked){
+                optionsPanelConnection.getDifficultyButtonHardExperimental().setVisible(true);
+                experimentalDifficultyUnlocked = true;
+                System.out.println("[UNLOCKED EXPERIMENTAL DIFFICULTY]");
+            }
             // Disable MatrixPartitions visibility
             for(int column = 0; column < matrixDimension; column++){
                 matrixPartitionArrayList.get(column).setVisible(false);
@@ -324,6 +339,16 @@ public class Matrix extends JPanel{
         }
     }
 
+    // right-clicking on a cell will highlight it, flagging it
+    // this method resets all flags
+    public void resetAllCellFlags(){
+        for(int partitionCount = 0; partitionCount < matrixDimension; partitionCount++){
+            for(int cellCount = 0; cellCount < matrixDimension; cellCount++){
+                matrixPartitionArrayList.get(partitionCount).getMatrixCellArrayList().get(cellCount).getMainLabel().setBackground(Color.BLACK);
+            }
+        }
+    }
+
     // toggles key controls
     public void toggleKeyControls(boolean pToggle){
         matrixUpKey.setEnabled(pToggle);
@@ -344,13 +369,39 @@ public class Matrix extends JPanel{
         passKeyProgress = 0;
         cipherConnection.setCipherProgress(passKeyProgress);
 
+        switch(difficultySetting){
+            case 0:
+                letterRange = 5;
+                numberRange = 5;
+                System.out.println("Difficulty: Easy, " + difficultySetting + ", (" + letterRange + "," + numberRange + ")");
+                break;
+            case 1:
+                letterRange = 10;
+                numberRange = 10;
+                System.out.println("Difficulty: Default, " + difficultySetting + ", (" + letterRange + "," + numberRange + ")");
+                break;
+            case 2:
+                letterRange = 26;
+                numberRange = 10;
+                System.out.println("Difficulty: Hard, " + difficultySetting + ", (" + letterRange + "," + numberRange + ")");
+                break;
+            case 3:
+                letterRange = 26;
+                numberRange = 23;
+                System.out.println("Difficulty: Hard(experimental), " + difficultySetting + ", (" + letterRange + "," + numberRange + ")");
+                break;
+            default:
+                System.out.println("Error (Matrix.java, switch case: default).");
+                break;
+        }
+
         this.setBackground(Color.WHITE);
         for(int partitionCount = 0; partitionCount < matrixDimension; partitionCount++){
             matrixPartitionArrayList.get(partitionCount).setVisible(true);
             matrixPartitionArrayList.get(partitionCount).setBackground(Color.BLACK);
             for(int cellCount = 0; cellCount < matrixDimension; cellCount++){
                 tempCell = matrixPartitionArrayList.get(partitionCount).getMatrixCellArrayList().get(cellCount);
-                tempCell.resetMatrixCell();
+                tempCell.resetMatrixCell(letterRange,numberRange);
             }
         }
         unHighlight();
@@ -370,6 +421,7 @@ public class Matrix extends JPanel{
             this.remove(dialogueBoxSpamArrayList.get(count));
         }
         dialogueBoxSpamArrayList.clear();
+        colorCounter = 0;
 
     }
 

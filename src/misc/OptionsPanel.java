@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -43,18 +44,24 @@ public class OptionsPanel extends JPanel implements MouseListener {
     JPanel panel2 = new JPanel();
 
     //[0] PANEL 1 (SETTINGS)
-    //[1] Detection Meter Toggle
-    JToggleButton detectionMeterToggleButton = new JToggleButton();
     //[1] Difficulty Setting Components
     JLabel difficultySettingDock = new JLabel();
+    JButton difficultyButtonEasy = new JButton();
+    JButton difficultyButtonDefault = new JButton();
+    JButton difficultyButtonHard = new JButton();
+    JButton difficultyButtonHardExperimental = new JButton();
+    ArrayList<JButton> difficultyButtonsArrayList = new ArrayList<>();
+    JButton miniRestartButton = new JButton();
     //[1] Disable Detection Meter Setting Components
     JLabel toggleDetectionMeterSettingDock = new JLabel();
+    JToggleButton detectionMeterToggleButton = new JToggleButton();
     //[1] cipher.Cipher Color Scheme Setting Components
     JLabel cipherColorSchemeSettingDock = new JLabel();
     JLabel defaultSchemeLabel = new JLabel();
     JLabel starfieldSchemeLabel = new JLabel();
     JLabel gameboySchemeLabel = new JLabel();
     JLabel virtualboySchemeLabel = new JLabel();
+    ArrayList<JLabel> colorSchemeLabelsArrayList = new ArrayList<>();
 
     //[0] PANEL 2 (QUIT)
     JButton restartButton = new JButton();
@@ -65,8 +72,15 @@ public class OptionsPanel extends JPanel implements MouseListener {
     Dialogue dialogue = new Dialogue();
 
     Border optionsPanelBorder = BorderFactory.createTitledBorder(null,"options_submenu_v4202.03.01",3, TitledBorder.BOTTOM,null,Color.ORANGE);
-    Border defaultSchemeLabelBorder = BorderFactory.createLineBorder(Color.WHITE,2);
-    Border highlightSchemeLabelBorder = BorderFactory.createLineBorder(Color.ORANGE,4);
+    Border defaultBorder = BorderFactory.createLineBorder(Color.WHITE,2);
+    Border highlightBorder = BorderFactory.createLineBorder(Color.ORANGE.darker(),4);
+    Border selectedBorder = BorderFactory.createLineBorder(Color.ORANGE,4);
+
+    int difficultyIntSelected = 1;
+    int difficultyIntPreviouslySelected = 1;
+    int schemeIntSelected = 0;
+    int schemeIntPreviouslySelected = 0;
+    boolean clickedMiniRestartButton = false;
 
     public void setCipherConnection(Cipher cipherConnection) {
         this.cipherConnection = cipherConnection;
@@ -77,6 +91,26 @@ public class OptionsPanel extends JPanel implements MouseListener {
     }
     public void setOptionsButtonBool(boolean optionsButtonBool) {
         this.optionsButtonBool = optionsButtonBool;
+    }
+
+    public JButton getDifficultyButtonEasy() {
+        return difficultyButtonEasy;
+    }
+    public JButton getDifficultyButtonDefault() {
+        return difficultyButtonDefault;
+    }
+    public JButton getDifficultyButtonHard() {
+        return difficultyButtonHard;
+    }
+    public JButton getDifficultyButtonHardExperimental() {
+        return difficultyButtonHardExperimental;
+    }
+    public JButton getMiniRestartButton() {
+        return miniRestartButton;
+    }
+
+    public JToggleButton getDetectionMeterToggleButton() {
+        return detectionMeterToggleButton;
     }
 
     public JLabel getOptionsButton() {
@@ -90,10 +124,6 @@ public class OptionsPanel extends JPanel implements MouseListener {
     }
     public JButton getCreditsButton() {
         return creditsButton;
-    }
-
-    public JToggleButton getDetectionMeterToggleButton() {
-        return detectionMeterToggleButton;
     }
 
     public OptionsPanel(){
@@ -126,9 +156,63 @@ public class OptionsPanel extends JPanel implements MouseListener {
         difficultySettingDock.setBackground(new Color(15,15,15));
         difficultySettingDock.setVerticalAlignment(SwingConstants.TOP);
         difficultySettingDock.setHorizontalAlignment(SwingConstants.LEFT);
-        difficultySettingDock.setText("Difficulty (N/A)");
+        difficultySettingDock.setText("Difficulty");
         difficultySettingDock.addMouseListener(this);
         panel1.add(difficultySettingDock);
+
+        difficultyButtonEasy.setSize(30,30);
+        difficultyButtonEasy.setOpaque(true);
+        difficultyButtonEasy.setForeground(Color.WHITE);
+        difficultyButtonEasy.setBackground(Color.BLACK);
+        difficultyButtonEasy.setBorder(defaultBorder);
+        difficultyButtonEasy.setHorizontalAlignment(SwingConstants.CENTER);
+        difficultyButtonEasy.setText("E");
+        difficultyButtonEasy.setFocusable(false);
+        difficultyButtonEasy.addMouseListener(this);
+        difficultySettingDock.add(difficultyButtonEasy);
+
+        difficultyButtonDefault.setSize(30,30);
+        difficultyButtonDefault.setOpaque(true);
+        difficultyButtonDefault.setForeground(Color.WHITE);
+        difficultyButtonDefault.setBackground(Color.BLACK);
+        difficultyButtonDefault.setBorder(defaultBorder);
+        difficultyButtonDefault.setHorizontalAlignment(SwingConstants.CENTER);
+        difficultyButtonDefault.setText("D");
+        difficultyButtonDefault.setFocusable(false);
+        difficultyButtonDefault.addMouseListener(this);
+        difficultySettingDock.add(difficultyButtonDefault);
+
+        difficultyButtonHard.setSize(30,30);
+        difficultyButtonHard.setOpaque(true);
+        difficultyButtonHard.setForeground(Color.WHITE);
+        difficultyButtonHard.setBackground(Color.BLACK);
+        difficultyButtonHard.setBorder(defaultBorder);
+        difficultyButtonHard.setHorizontalAlignment(SwingConstants.CENTER);
+        difficultyButtonHard.setText("H");
+        difficultyButtonHard.setFocusable(false);
+        difficultyButtonHard.addMouseListener(this);
+        difficultySettingDock.add(difficultyButtonHard);
+
+        difficultyButtonHardExperimental.setSize(30,30);
+        difficultyButtonHardExperimental.setOpaque(true);
+        difficultyButtonHardExperimental.setForeground(Color.WHITE);
+        difficultyButtonHardExperimental.setBackground(Color.BLACK);
+        difficultyButtonHardExperimental.setBorder(defaultBorder);
+        difficultyButtonHardExperimental.setHorizontalAlignment(SwingConstants.CENTER);
+        difficultyButtonHardExperimental.setText("?");
+        difficultyButtonHardExperimental.setFocusable(false);
+        difficultyButtonHardExperimental.addMouseListener(this);
+        difficultyButtonHardExperimental.setVisible(false);
+        difficultySettingDock.add(difficultyButtonHardExperimental);
+
+        miniRestartButton.setSize(80,25);
+        miniRestartButton.setForeground(Color.BLACK);
+        miniRestartButton.setBackground(Color.ORANGE);
+        miniRestartButton.setText("Restart");
+        miniRestartButton.setFocusable(false);
+        miniRestartButton.addMouseListener(this);
+        miniRestartButton.setVisible(false);
+        difficultySettingDock.add(miniRestartButton);
 
         //[1] Disable Detection Meter Setting Components
         toggleDetectionMeterSettingDock.setSize(281, 54);
@@ -162,29 +246,30 @@ public class OptionsPanel extends JPanel implements MouseListener {
 
         defaultSchemeLabel.setSize(20,30);
         defaultSchemeLabel.setOpaque(true);
+        defaultSchemeLabel.setForeground(Color.WHITE);
         defaultSchemeLabel.setBackground(Color.BLACK);
         defaultSchemeLabel.addMouseListener(this);
-        defaultSchemeLabel.setBorder(defaultSchemeLabelBorder);
+        defaultSchemeLabel.setBorder(defaultBorder);
         cipherColorSchemeSettingDock.add(defaultSchemeLabel);
 
         starfieldSchemeLabel.setSize(20,30);
         starfieldSchemeLabel.setOpaque(true);
         starfieldSchemeLabel.setBackground(Color.BLACK);
         starfieldSchemeLabel.addMouseListener(this);
-        starfieldSchemeLabel.setBorder(defaultSchemeLabelBorder);
+        starfieldSchemeLabel.setBorder(defaultBorder);
         cipherColorSchemeSettingDock.add(starfieldSchemeLabel);
 
         gameboySchemeLabel.setSize(20,30);
         gameboySchemeLabel.setOpaque(true);
         gameboySchemeLabel.setBackground(Color.BLACK);
-        gameboySchemeLabel.setBorder(defaultSchemeLabelBorder);
+        gameboySchemeLabel.setBorder(defaultBorder);
         gameboySchemeLabel.addMouseListener(this);
         cipherColorSchemeSettingDock.add(gameboySchemeLabel);
 
         virtualboySchemeLabel.setSize(20,30);
         virtualboySchemeLabel.setOpaque(true);
         virtualboySchemeLabel.setBackground(Color.BLACK);
-        virtualboySchemeLabel.setBorder(defaultSchemeLabelBorder);
+        virtualboySchemeLabel.setBorder(defaultBorder);
         virtualboySchemeLabel.addMouseListener(this);
         cipherColorSchemeSettingDock.add(virtualboySchemeLabel);
 
@@ -224,6 +309,49 @@ public class OptionsPanel extends JPanel implements MouseListener {
 
         dialogueBox = new DialogueBox(tabbedPane.getWidth()-4,155);
         this.add(dialogueBox);
+
+        addComponentsToArrayList();
+        rememberDifficultySelectionHighlight();
+        rememberSchemeSelectionHighlight();
+    }
+
+    //DOC>>
+    private void checkForChangedDifficulty(){
+        if(difficultyIntSelected != difficultyIntPreviouslySelected){
+            miniRestartButton.setVisible(true);
+        }
+        else miniRestartButton.setVisible(false);
+    }
+    // removes the border from the previously selected difficulty button and sets that border to the newly selected difficulty button
+    private void rememberDifficultySelectionHighlight(){
+        //clear previous
+        if(difficultyIntPreviouslySelected != difficultyIntSelected){
+            difficultyButtonsArrayList.get(difficultyIntPreviouslySelected).setBorder(defaultBorder);
+        }
+        //highlight selected difficulty button
+        difficultyButtonsArrayList.get(difficultyIntSelected).setBorder(selectedBorder);
+    }
+    // removes the border from the previously selected scheme label and sets that border to the newly selected scheme label
+    private void rememberSchemeSelectionHighlight(){
+        //clear previous
+        if(schemeIntPreviouslySelected != schemeIntSelected){
+            colorSchemeLabelsArrayList.get(schemeIntPreviouslySelected).setBorder(defaultBorder);
+        }
+        //highlight selected scheme label
+        colorSchemeLabelsArrayList.get(schemeIntSelected).setBorder(selectedBorder);
+    }
+    // adds various buttons and labels to their respective ArrayLists
+    // ArrayLists are used to easily retrieve components
+    private void addComponentsToArrayList(){
+        difficultyButtonsArrayList.add(difficultyButtonEasy);
+        difficultyButtonsArrayList.add(difficultyButtonDefault);
+        difficultyButtonsArrayList.add(difficultyButtonHard);
+        difficultyButtonsArrayList.add(difficultyButtonHardExperimental);
+
+        colorSchemeLabelsArrayList.add(defaultSchemeLabel);
+        colorSchemeLabelsArrayList.add(starfieldSchemeLabel);
+        colorSchemeLabelsArrayList.add(gameboySchemeLabel);
+        colorSchemeLabelsArrayList.add(virtualboySchemeLabel);
     }
 
     @Override
@@ -236,6 +364,11 @@ public class OptionsPanel extends JPanel implements MouseListener {
         //[0] PANEL 1 (SETTINGS)
         //[1] Difficulty Setting Components
         difficultySettingDock.setLocation(0,0);
+        difficultyButtonEasy.setLocation(155,(difficultySettingDock.getY()/2 + difficultyButtonEasy.getHeight()/2));
+        difficultyButtonDefault.setLocation((difficultyButtonEasy.getX()+ difficultyButtonEasy.getWidth())+10, difficultyButtonEasy.getY());
+        difficultyButtonHard.setLocation((difficultyButtonDefault.getX()+ difficultyButtonDefault.getWidth())+10, difficultyButtonEasy.getY());
+        difficultyButtonHardExperimental.setLocation(difficultyButtonEasy.getX()-(difficultyButtonEasy.getWidth()+10), difficultyButtonEasy.getY());
+        miniRestartButton.setLocation(10, (difficultyButtonEasy.getY()+difficultyButtonEasy.getHeight())-miniRestartButton.getHeight());
 
         //[1] Disable Detection Meter Setting Components
         toggleDetectionMeterSettingDock.setLocation(0,(difficultySettingDock.getY()+ difficultySettingDock.getHeight()));
@@ -308,22 +441,64 @@ public class OptionsPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        //Difficulty Buttons
+        if(e.getComponent() == difficultyButtonEasy){
+            difficultyIntPreviouslySelected = difficultyIntSelected;
+            difficultyIntSelected = 0;
+            checkForChangedDifficulty();
+            rememberDifficultySelectionHighlight();
+        }
+        if(e.getComponent() == difficultyButtonDefault){
+            difficultyIntPreviouslySelected = difficultyIntSelected;
+            difficultyIntSelected = 1;
+            checkForChangedDifficulty();
+            rememberDifficultySelectionHighlight();
+        }
+        if(e.getComponent() == difficultyButtonHard){
+            difficultyIntPreviouslySelected = difficultyIntSelected;
+            difficultyIntSelected = 2;
+            checkForChangedDifficulty();
+            rememberDifficultySelectionHighlight();
+        }
+        if(e.getComponent() == difficultyButtonHardExperimental){
+            difficultyIntPreviouslySelected = difficultyIntSelected;
+            difficultyIntSelected = 3;
+            checkForChangedDifficulty();
+            rememberDifficultySelectionHighlight();
+        }
+        if (e.getComponent() == miniRestartButton){
+            clickedMiniRestartButton = true;
+            miniRestartButton.setVisible(false);
+        }
+        // Color Scheme Labels
         if (e.getComponent() == defaultSchemeLabel) {
+            schemeIntPreviouslySelected = schemeIntSelected;
+            schemeIntSelected = 0;
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().changeCurrentColorScheme(0);
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }
         if (e.getComponent() == starfieldSchemeLabel) {
+            schemeIntPreviouslySelected = schemeIntSelected;
+            schemeIntSelected = 1;
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().changeCurrentColorScheme(1);
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }
         if (e.getComponent() == gameboySchemeLabel) {
+            schemeIntPreviouslySelected = schemeIntSelected;
+            schemeIntSelected = 2;
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().changeCurrentColorScheme(2);
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }
         if (e.getComponent() == virtualboySchemeLabel) {
+            schemeIntPreviouslySelected = schemeIntSelected;
+            schemeIntSelected = 3;
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().changeCurrentColorScheme(3);
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
@@ -345,6 +520,18 @@ public class OptionsPanel extends JPanel implements MouseListener {
             if(!(dialogueBox.getSettledText() == 0)) dialogueBox.preTalkSetup(dialogue.getSETTINGS_EXPLANATIONS(0));
             playSound("resources/options_menu_settings.wav");
         }
+        if(e.getComponent() == difficultyButtonEasy){
+            difficultyButtonEasy.setBorder(highlightBorder);
+        }
+        if(e.getComponent() == difficultyButtonDefault){
+            difficultyButtonDefault.setBorder(highlightBorder);
+        }
+        if(e.getComponent() == difficultyButtonHard){
+            difficultyButtonHard.setBorder(highlightBorder);
+        }
+        if(e.getComponent() == difficultyButtonHardExperimental){
+            difficultyButtonHardExperimental.setBorder(highlightBorder);
+        }
         //[1] Disable Detection Meter Setting Components
         if(e.getComponent() == toggleDetectionMeterSettingDock){
             toggleDetectionMeterSettingDock.setForeground(Color.ORANGE);
@@ -358,22 +545,22 @@ public class OptionsPanel extends JPanel implements MouseListener {
             playSound("resources/options_menu_settings.wav");
         }
         if(e.getComponent() == defaultSchemeLabel){
-            defaultSchemeLabel.setBorder(highlightSchemeLabelBorder);
+            defaultSchemeLabel.setBorder(highlightBorder);
             cipherConnection.getCIPHER_PARTITION().changePreviewColorScheme(0);
             cipherConnection.getCIPHER_PARTITION().previewColors();
         }
         if(e.getComponent() == starfieldSchemeLabel){
-            starfieldSchemeLabel.setBorder(highlightSchemeLabelBorder);
+            starfieldSchemeLabel.setBorder(highlightBorder);
             cipherConnection.getCIPHER_PARTITION().changePreviewColorScheme(1);
             cipherConnection.getCIPHER_PARTITION().previewColors();
         }
         if(e.getComponent() == gameboySchemeLabel){
-            gameboySchemeLabel.setBorder(highlightSchemeLabelBorder);
+            gameboySchemeLabel.setBorder(highlightBorder);
             cipherConnection.getCIPHER_PARTITION().changePreviewColorScheme(2);
             cipherConnection.getCIPHER_PARTITION().previewColors();
         }
         if(e.getComponent() == virtualboySchemeLabel){
-            virtualboySchemeLabel.setBorder(highlightSchemeLabelBorder);
+            virtualboySchemeLabel.setBorder(highlightBorder);
             cipherConnection.getCIPHER_PARTITION().changePreviewColorScheme(3);
             cipherConnection.getCIPHER_PARTITION().previewColors();
         }
@@ -400,6 +587,22 @@ public class OptionsPanel extends JPanel implements MouseListener {
             difficultySettingDock.setForeground(Color.WHITE);
             dialogueBox.setSettledText(0);
         }
+        if(e.getComponent() == difficultyButtonEasy){
+            difficultyButtonEasy.setBorder(defaultBorder);
+            rememberDifficultySelectionHighlight();
+        }
+        if(e.getComponent() == difficultyButtonDefault){
+            difficultyButtonDefault.setBorder(defaultBorder);
+            rememberDifficultySelectionHighlight();
+        }
+        if(e.getComponent() == difficultyButtonHard){
+            difficultyButtonHard.setBorder(defaultBorder);
+            rememberDifficultySelectionHighlight();
+        }
+        if(e.getComponent() == difficultyButtonHardExperimental){
+            difficultyButtonHardExperimental.setBorder(defaultBorder);
+            rememberDifficultySelectionHighlight();
+        }
         //[1] Disable Detection Meter Setting Components
         if(e.getComponent() == toggleDetectionMeterSettingDock){
             toggleDetectionMeterSettingDock.setForeground(Color.WHITE);
@@ -411,22 +614,26 @@ public class OptionsPanel extends JPanel implements MouseListener {
             dialogueBox.setSettledText(2);
         }
         if(e.getComponent() == defaultSchemeLabel){
-            defaultSchemeLabel.setBorder(defaultSchemeLabelBorder);
+            defaultSchemeLabel.setBorder(defaultBorder);
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }
         if(e.getComponent() == starfieldSchemeLabel){
-            starfieldSchemeLabel.setBorder(defaultSchemeLabelBorder);
+            starfieldSchemeLabel.setBorder(defaultBorder);
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }
         if(e.getComponent() == gameboySchemeLabel){
-            gameboySchemeLabel.setBorder(defaultSchemeLabelBorder);
+            gameboySchemeLabel.setBorder(defaultBorder);
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }
         if(e.getComponent() == virtualboySchemeLabel){
-            virtualboySchemeLabel.setBorder(defaultSchemeLabelBorder);
+            virtualboySchemeLabel.setBorder(defaultBorder);
+            rememberSchemeSelectionHighlight();
             cipherConnection.getCIPHER_PARTITION().setColors();
             cipherConnection.getCIPHER_PARTITION().resumeColorProgress(cipherConnection.getCipherProgress());
         }

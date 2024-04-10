@@ -7,9 +7,9 @@ Its only use in this project is limited to the OptionsPanel.
  */
 public class Dialogue {
     private final String[] SETTINGS_EXPLANATIONS = {
-            "Changes the difficulty. <br><font color='red'>(Not Available)</font>",
+            "Changes the difficulty. <div style='text-align: left;'>* Easy<br>* Default<br>* Hard <br>* ???</div><font color='red'>(Requires restart)</font>",
             "Toggles the Detection Meter.",
-            "Changes the Cipher color scheme. <br>* Default<br>* Starfield<br>* Gameboy<br>* Virtual Boy",
+            "Changes the Cipher color scheme. <div style='text-align: left;'>* Default<br>* Starfield<br>* Gameboy<br>* Virtual Boy</div>",
             "Restarts the game.",
             "Quits the game.",
             "View developer credits."};
