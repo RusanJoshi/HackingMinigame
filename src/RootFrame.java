@@ -29,9 +29,9 @@ FINISHED (Nov 29, 2023 - Mar 3, 2024) - [1.0]
 
 TODO:
  -Main Ops
- [!] update manual (graphics, controls, (font and layout)?)
- [!] link changelog in README
+ [!]
  -Side Ops
+ [!] Studio splash screen animation (eyes)
  [!] Security mechanic (PEEL THE ONION!)
  [!] keyboard controls for flagging
  [!] Timer?
