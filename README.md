@@ -14,8 +14,9 @@ Written in Java.
 ## [Manual](HackingMinigameManual.pdf) 
 
 ![](site/HMG_1.1.0.gif)
-
 <sub><sup><sup>Have fun...if it works...</sup></sup></sub>
+
+## [Download just the game](HackingMinigame_1.1.0.zip)
 
 ## [Version History and Changelog](ChangelogHistory.txt)
 
